@@ -11,7 +11,8 @@ export default {
         secundary: '#E5E8DE'
       },
       fontFamily: {
-        'sans': ['Raleway', 'sans-serif', 'Montserrat', 'sans-serif']
+        'title': ['Raleway', 'sans-serif'],
+        'body': ['Montserrat', 'sans-serif']
       },
       stroke: {
         primary: '#303030'

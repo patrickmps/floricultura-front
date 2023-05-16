@@ -15,7 +15,8 @@ export default {
         'body': ['Montserrat', 'sans-serif']
       },
       stroke: {
-        primary: '#303030'
+        primary: '#303030',
+        secundary: '#E5E8DE',
       },
 
       strokeWidth: {
@@ -24,6 +25,7 @@ export default {
 
       colors: {
         primary: "#303030",
+        secundary: '#E5E8DE',
         pink: {
           600: '#DD2576',
           

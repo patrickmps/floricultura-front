@@ -8,7 +8,8 @@ import {
 } from "../services/ProductService";
 import { ProductForm } from "../components/ProductForm";
 import { Button } from "../components/Button";
-import { ProductTypes } from "../@types/data_types";
+import { ProductTypes, SupplierTypes } from "../@types/data_types";
+import { getSuppliers } from "../services/SupplierService";
 
 export const Products = () => {
   const [products, setProducts] = useState([]);
@@ -16,16 +17,25 @@ export const Products = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [refreshProducts, setRefreshProducts] = useState(false);
   const [productEdit, setProductEdit] = useState<ProductTypes | null>(null);
+  const [suppliersOptions, setSupplierOptions] = useState([{label: '', value: null}])
 
   function openModal() {
     setModalIsOpen(true);
+    fetchSuppliers()
   }
 
-  function afterOpenModal() {}
+  async function fetchSuppliers() {
+    const data = await getSuppliers();
+    const suppliers = data.map((supplier: SupplierTypes) => ({label: supplier.name, value: supplier.id}))
+    setSupplierOptions(suppliers)
+  }
+
+  // function afterOpenModal() {}
 
   function closeModal() {
     setModalIsOpen(false);
     setProductEdit(null);
+    setSupplierOptions([{label: '', value: null}])
   }
 
   async function fetchData() {
@@ -73,7 +83,7 @@ export const Products = () => {
       </div>
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
+        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={{
           overlay: {
@@ -92,7 +102,7 @@ export const Products = () => {
         <h1 className="font-title text-2xl font-bold text-primary">
           {isEdit ? "Editar Produto" : "Cadastrar Produto"}
         </h1>
-        <ProductForm edit={isEdit} product={productEdit} setRefresh={() => setRefreshProducts(!refreshProducts)}  />
+        <ProductForm edit={isEdit} product={productEdit} setRefresh={() => setRefreshProducts(!refreshProducts)} options={suppliersOptions}  />
       </Modal>
     </div>
   );

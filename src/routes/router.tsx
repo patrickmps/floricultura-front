@@ -5,6 +5,7 @@ import { Home } from "../pages/Home";
 import { Products } from "../pages/Products";
 import App from "../App";
 import { Suppliers } from "../pages/Suppliers";
+import { Address } from "../pages/Address";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: 'fornecedores',
         element: <Suppliers />
+      },
+      {
+        path: 'enderecos',
+        element: <Address />
       },
     ]
   }

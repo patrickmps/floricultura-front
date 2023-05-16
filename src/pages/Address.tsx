@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import { FiX } from "react-icons/fi";
 import Modal from "react-modal";
 import { Button } from "../components/Button";
-import { SupplierTypes } from "../@types/data_types";
-import { SupplierForm } from "../components/SupplierForm";
-import { CardSupplier } from "../components/CardSupplier";
-import { deleteSupplier, getSuppliers } from "../services/SupplierService";
+import { AddressTypes } from "../@types/data_types";
+import { AddressForm } from "../components/AddressForm";
+import { CardAddress } from "../components/CardAddress";
+import { deleteAddress, getAddresses } from "../services/AddressService";
 
-export const Suppliers = () => {
-  const [suppliers, setSuppliers] = useState([]);
+export const Address = () => {
+  const [addresses, setAddresses] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [refreshSuppliers, setRefreshSuppliers] = useState(false);
-  const [suppliertEdit, setSupplierEdit] = useState<SupplierTypes | null>(null);
+  const [refreshAddresses, setRefreshAddresses] = useState(false);
+  const [suppliertEdit, setAddressEdit] = useState<AddressTypes | null>(null);
 
   function openModal() {
     setModalIsOpen(true);
@@ -22,17 +22,17 @@ export const Suppliers = () => {
 
   function closeModal() {
     setModalIsOpen(false);
-    setSupplierEdit(null);
+    setAddressEdit(null);
   }
 
   async function fetchData() {
-    const data = await getSuppliers();
-    setSuppliers(data);
+    const data = await getAddresses();
+    setAddresses(data);
   }
 
   useEffect(() => {
     fetchData();
-  }, [refreshSuppliers]);
+  }, [refreshAddresses]);
 
   return (
     <div className="flex flex-col px-36">
@@ -50,20 +50,20 @@ export const Suppliers = () => {
         />
       </span>
       <div className="grid grid-flow-row-dense grid-cols-3 gap-5 h-full w-full items-center justify-center 2xl:grid-cols-4">
-        {suppliers &&
-          suppliers.map((supplier: SupplierTypes) => (
-            <CardSupplier
+        {addresses &&
+          addresses.map((supplier: AddressTypes) => (
+            <CardAddress
               data={supplier}
               key={supplier.id}
               onDelete={async () => {
-                await deleteSupplier(supplier.id!);
-                setRefreshSuppliers(!refreshSuppliers);
+                await deleteAddress(supplier.id!);
+                setRefreshAddresses(!refreshAddresses);
               }}
               onUpdate={() => {
                 setIsEdit(true);
-                setSupplierEdit(supplier);
+                setAddressEdit(supplier);
                 openModal();
-                setRefreshSuppliers(!refreshSuppliers);
+                setRefreshAddresses(!refreshAddresses);
               }}
             />
           ))}
@@ -83,20 +83,20 @@ export const Suppliers = () => {
             padding: 0,
           },
         }}
-        className="flex flex-col h-5/6 w-2/4 rounded-xl self-center justify-self-center bg-primary/80 border border-gray-300 justify-center items-center "
+        className="flex flex-col h-5/6 w-2/4 rounded-xl self-center justify-self-center bg-primary/80 border border-gray-300 justify-center items-center overflow-y-scroll overflow-x-hidden"
       >
         <FiX
           size={32}
           onClick={closeModal}
           className="stroke-red-700 cursor-pointer fixed top-5 right-10"
         />
-        <h1 className="font-title text-2xl font-bold text-primary">
-          {isEdit ? "Editar Fornecedor" : "Cadastrar Fornecedor"}
+        <h1 className="font-title text-2xl font-bold text-primary mt-10">
+          {isEdit ? "Editar Endereço" : "Cadastrar Endereço"}
         </h1>
-        <SupplierForm
+        <AddressForm
           edit={isEdit}
-          supplier={suppliertEdit}
-          setRefresh={() => setRefreshSuppliers(!refreshSuppliers)}
+          address={suppliertEdit}
+          setRefresh={() => setRefreshAddresses(!refreshAddresses)}
         />
       </Modal>
     </div>

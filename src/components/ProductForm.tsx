@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "./Button";
 import { useState } from "react";
+import { SelectInput } from "./SelectInput";
 
 const productSchema = yup.object({
   name: yup
@@ -29,10 +30,16 @@ const productSchema = yup.object({
 type ProductFormType = {
   product?: ProductTypes | null;
   edit?: boolean;
+  options: { label: string; value: any }[];
   setRefresh: () => void;
 };
 
-export const ProductForm = ({ product, edit, setRefresh }: ProductFormType) => {
+export const ProductForm = ({
+  product,
+  edit,
+  setRefresh,
+  options,
+}: ProductFormType) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -47,7 +54,7 @@ export const ProductForm = ({ product, edit, setRefresh }: ProductFormType) => {
     toast.success(
       edit ? "Produto editado com sucesso!" : "Produto cadastrado com sucesso!",
       {
-        position: "bottom-left",
+        position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -62,7 +69,7 @@ export const ProductForm = ({ product, edit, setRefresh }: ProductFormType) => {
     toast.error(
       edit ? "Erro ao editar o produto." : "Erro ao cadastrar o produto.",
       {
-        position: "bottom-left",
+        position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -195,48 +202,45 @@ export const ProductForm = ({ product, edit, setRefresh }: ProductFormType) => {
             )}
           />
         </span>
-        <span className="flex w-full gap-2">
-          <Controller
-            control={control}
-            name="categoryId"
-            render={({ field: { onChange } }) => (
-              <Input
-                title="ID da Categoria"
-                placeholder="ID da Categoria"
-                defaultValue={product?.categoryId}
-                onChange={onChange}
-                type="number"
-                min={1}
-                className={
-                  errors.categoryId?.message
-                    ? "border-red-700"
-                    : "border-gray-400"
-                }
-                errorMessage={errors.categoryId?.message}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="supplierId"
-            render={({ field: { onChange } }) => (
-              <Input
-                title="ID do Fornecedor"
-                placeholder="ID do Fornecedor"
-                defaultValue={product?.supplierId}
-                onChange={onChange}
-                type="number"
-                min={1}
-                className={
-                  errors.supplierId?.message
-                    ? "border-red-700"
-                    : "border-gray-400"
-                }
-                errorMessage={errors.supplierId?.message}
-              />
-            )}
-          />
-        </span>
+        <Controller
+          control={control}
+          name="categoryId"
+          render={({ field: { onChange } }) => (
+            <Input
+              title="ID da Categoria"
+              placeholder="ID da Categoria"
+              defaultValue={product?.categoryId}
+              onChange={onChange}
+              type="number"
+              min={1}
+              className={
+                errors.categoryId?.message
+                  ? "border-red-700"
+                  : "border-gray-400"
+              }
+              errorMessage={errors.categoryId?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="supplierId"
+          render={({ field: { onChange } }) => (
+            <SelectInput
+              title="ID do Fornecedor"
+              placeholder="ID do Fornecedor"
+              options={options}
+              onChange={onChange}
+              className={
+                errors.supplierId?.message
+                  ? "border-red-700"
+                  : "border-gray-400"
+              }
+              errorMessage={errors.supplierId?.message}
+            />
+          )}
+        />
 
         <Button
           type="submit"

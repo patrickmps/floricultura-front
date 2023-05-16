@@ -11,6 +11,7 @@ export const NavMenu = () => {
           <li><Link to='/'>Home</Link></li>
           <li><Link to='/produtos'>Produtos</Link></li>
           <li><Link to='/fornecedores'>Fornecedores</Link></li>
+          <li><Link to='/enderecos'>Endereços</Link></li>
         </ul>
         <span className='flex flex-row gap-8'>
           <FiShoppingCart size='22' className='stroke-primary cursor-pointer hover:scale-150 transition-all'/>

@@ -23,14 +23,15 @@ const productSchema = yup.object({
     .min(30, "A descrição deve ter pelo menos 30 caracteres"),
   price: yup.string().required("O preço é obrigatório"),
   amount: yup.number().required("A quantidade é obrigatória."),
-  categoryId: yup.number().required("O ID da categoria é obrigatório."),
-  supplierId: yup.number().required("A ID do fornecedor é obrigatório."),
+  categoryId: yup.number().required("A categoria é obrigatória."),
+  supplierId: yup.number().required("O fornecedor é obrigatório."),
 });
 
 type ProductFormType = {
   product?: ProductTypes | null;
   edit?: boolean;
-  options: { label: string; value: any }[];
+  categoriesOptions: { label: string; value: any }[];
+  supplierOptions: { label: string; value: any }[];
   setRefresh: () => void;
 };
 
@@ -38,7 +39,8 @@ export const ProductForm = ({
   product,
   edit,
   setRefresh,
-  options,
+  categoriesOptions,
+  supplierOptions,
 }: ProductFormType) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -81,6 +83,8 @@ export const ProductForm = ({
     );
 
   async function onSubmit(data: ProductTypes) {
+    console.log(data)
+
     try {
       setIsLoading(true);
 
@@ -89,7 +93,7 @@ export const ProductForm = ({
           id: product?.id,
           name: data.name,
           description: data.description,
-          price: parseFloat(data.price!.toString().replace(",", ".")),
+          price: parseFloat(data.price.toString().replace(",", ".")),
           amount: data.amount,
           categoryId: data.categoryId,
           supplierId: data.supplierId,
@@ -206,13 +210,13 @@ export const ProductForm = ({
           control={control}
           name="categoryId"
           render={({ field: { onChange } }) => (
-            <Input
-              title="ID da Categoria"
-              placeholder="ID da Categoria"
+            <SelectInput
+              title="Categoria"
+              placeholder="Categoria"
+              options={categoriesOptions}
               defaultValue={product?.categoryId}
+              defaultChecked
               onChange={onChange}
-              type="number"
-              min={1}
               className={
                 errors.categoryId?.message
                   ? "border-red-700"
@@ -228,9 +232,11 @@ export const ProductForm = ({
           name="supplierId"
           render={({ field: { onChange } }) => (
             <SelectInput
-              title="ID do Fornecedor"
-              placeholder="ID do Fornecedor"
-              options={options}
+              title="Fornecedor"
+              placeholder="Fornecedor"
+              options={supplierOptions}
+              defaultValue={product?.supplierId}
+
               onChange={onChange}
               className={
                 errors.supplierId?.message

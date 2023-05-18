@@ -1,11 +1,21 @@
 export type ProductTypes = {
   id?: number;
-  name: string;
-  description: string;
-  price: number;
+  name?: string;
+  description?: string;
+  price?: number;
+  amount?: number;
+  categoryId?: number;
+  supplierId?: number;
+};
+export type OrderTypes = {
+  id?: number;
+  productId: number;
   amount: number;
-  categoryId: number;
-  supplierId: number;
+  totalPrice: number;
+  shippingAddressId?: number;
+  expectedDate: string | number | Date;
+  deliveryDate: string | number | Date | null;
+  status: string;
 };
 export type SupplierTypes = {
   id?: number;
@@ -28,4 +38,4 @@ export type AddressTypes = {
 export type CategoryTypes = {
   id?: number;
   category: string;
-}
+};

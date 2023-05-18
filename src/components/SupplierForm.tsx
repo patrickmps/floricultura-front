@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button } from "./Button";
 import { useState } from "react";
 import { createSupplier, updateSupplier } from "../services/SupplierService";
+import { SelectInput } from "./SelectInput";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -35,12 +36,14 @@ type SupplierFormType = {
   supplier?: SupplierTypes | null;
   edit?: boolean;
   setRefresh: () => void;
+  addressesOptions: { label: string; value: any }[];
 };
 
 export const SupplierForm = ({
   supplier,
   edit,
   setRefresh,
+  addressesOptions,
 }: SupplierFormType) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -162,47 +165,43 @@ export const SupplierForm = ({
             />
           )}
         />
-        <span className="flex w-full gap-2">
-          <Controller
-            control={control}
-            name="phone"
-            render={({ field: { onChange } }) => (
-              <Input
-                title="Telefone"
-                placeholder="XXXXXXXXXXX"
-                defaultValue={supplier?.phone}
-                onChange={onChange}
-                type="tel"
-                maxLength={11}
-                className={
-                  errors.phone?.message ? "border-red-700" : "border-gray-400"
-                }
-                errorMessage={errors.phone?.message}
-              />
-            )}
-          />
 
-          <Controller
-            control={control}
-            name="addressId"
-            render={({ field: { onChange } }) => (
-              <Input
-                title="ID do endereço"
-                placeholder="ID do endereço"
-                defaultValue={supplier?.addressId}
-                onChange={onChange}
-                type="number"
-                min={1}
-                className={
-                  errors.addressId?.message
-                    ? "border-red-700"
-                    : "border-gray-400"
-                }
-                errorMessage={errors.addressId?.message}
-              />
-            )}
-          />
-        </span>
+        <Controller
+          control={control}
+          name="phone"
+          render={({ field: { onChange } }) => (
+            <Input
+              title="Telefone"
+              placeholder="XXXXXXXXXXX"
+              defaultValue={supplier?.phone}
+              onChange={onChange}
+              type="tel"
+              maxLength={11}
+              className={
+                errors.phone?.message ? "border-red-700" : "border-gray-400"
+              }
+              errorMessage={errors.phone?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="addressId"
+          render={({ field: { onChange } }) => (
+            <SelectInput
+              options={addressesOptions}
+              title="Endereço"
+              placeholder="Endereço"
+              defaultValue={supplier?.addressId}
+              onChange={onChange}
+              className={
+                errors.addressId?.message ? "border-red-700" : "border-gray-400"
+              }
+              errorMessage={errors.addressId?.message}
+            />
+          )}
+        />
 
         <Button
           type="submit"

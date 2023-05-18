@@ -94,6 +94,7 @@ export const AddressForm = ({ address, edit, setRefresh }: AddressFormType) => {
     );
 
   async function onSubmit(data: AddressTypes) {
+    console.log(data)
     try {
       setIsLoading(true);
 
@@ -266,6 +267,25 @@ export const AddressForm = ({ address, edit, setRefresh }: AddressFormType) => {
                 errors.country?.message ? "border-red-700" : "border-gray-400"
               }
               errorMessage={errors.country?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="postalCode"
+          render={({ field: { onChange } }) => (
+            <Input
+              title="CEP"
+              placeholder="CEP"
+              defaultValue={address?.postalCode}
+              inputMode="numeric"
+              minLength={8}
+              maxLength={8}
+              onChange={onChange}
+              className={
+                errors.postalCode?.message ? "border-red-700" : "border-gray-400"
+              }
+              errorMessage={errors.postalCode?.message}
             />
           )}
         />

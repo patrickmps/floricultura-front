@@ -6,7 +6,7 @@ import Plant3 from '../assets/plant-3.png'
 
 export const Home = () => {
   return (
-    <div className="flex flex-col w-full items-center px-36 overflow-y-scroll pb-10">
+    <div className="flex flex-col w-full items-center px-36 overflow-y-scroll pb-10 ">
       <div className="mt-8 flex flex-row w-full max-w-screen-xl justify-between items-center">
         <h1 className='w-98 text-4xl font-sans font-semibold'>O colorido do <b className='font-semibold text-pink-600'>Nordeste</b> floresce em cada arranjo.</h1>
         <img src={FlorHome} alt="" className='w-102'/>

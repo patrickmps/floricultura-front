@@ -1,88 +1,73 @@
 import { useEffect, useState } from "react";
 import { FiX } from "react-icons/fi";
+import { CardOrder } from "../components/CardOrder";
 import Modal from "react-modal";
-import { Button } from "../components/Button";
-import { AddressTypes, SupplierTypes } from "../@types/data_types";
-import { SupplierForm } from "../components/SupplierForm";
-import { CardSupplier } from "../components/CardSupplier";
-import { deleteSupplier, getSuppliers } from "../services/SupplierService";
-import { getAddresses } from "../services/AddressService";
+import { deleteOrder, getOrders } from "../services/OrderService";
+import { OrderForm } from "../components/OrderForm";
+import { OrderTypes } from "../@types/data_types";
 
-export const Suppliers = () => {
-  const [suppliers, setSuppliers] = useState([]);
+export const Orders = () => {
+  const [orders, setOrders] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [refreshSuppliers, setRefreshSuppliers] = useState(false);
-  const [suppliertEdit, setSupplierEdit] = useState<SupplierTypes | null>(null);
-  const [addressesOptions, setAddressesOptions] = useState([
-    { label: "", value: null },
-  ]);
+  const [refreshOrders, setRefreshOrders] = useState(false);
+  const [orderEdit, setOrderEdit] = useState<OrderTypes | null>(null);
 
   function openModal() {
     setModalIsOpen(true);
-    fetchAddresses();
   }
 
   function closeModal() {
     setModalIsOpen(false);
-    setSupplierEdit(null);
-    setAddressesOptions([{ label: "", value: null }]);
+    setOrderEdit(null);
   }
 
   async function fetchData() {
-    const data = await getSuppliers();
-    setSuppliers(data.reverse());
-  }
-
-  async function fetchAddresses() {
-    const data = await getAddresses();
-    const addresses = data.map((address: AddressTypes) => ({
-      label: `${address.street}, ${address.number}, ${address.city}, ${address.state}, ${address.postalCode}.`,
-      value: address.id,
-    }));
-    setAddressesOptions(addresses);
+    const data = await getOrders();
+    setOrders(data.reverse());
   }
 
   useEffect(() => {
     fetchData();
-  }, [refreshSuppliers]);
+  }, [refreshOrders]);
 
   return (
     <div className="flex flex-col px-36 overflow-y-scroll mb-10">
       <span className="flex flex-row justify-between items-center">
         <h1 className="py-5 font-semibold text-2xl text-primary font-title">
-          Fornecedores
+          Plantas
         </h1>
-        <Button
+        {/* <Button
           className="w-28 h-8"
           title="Adicionar"
           onClick={() => {
             setIsEdit(false);
             openModal();
           }}
-        />
+        /> */}
       </span>
       <div className="grid grid-flow-row-dense grid-cols-3 gap-5 h-full w-full items-center justify-center 2xl:grid-cols-4">
-        {suppliers &&
-          suppliers.map((supplier: SupplierTypes) => (
-            <CardSupplier
-              data={supplier}
-              key={supplier.id}
+        {orders &&
+          orders.map((order: OrderTypes) => (
+            <CardOrder
+              data={order}
+              key={order.id}
               onDelete={async () => {
-                await deleteSupplier(supplier.id!);
-                setRefreshSuppliers(!refreshSuppliers);
+                await deleteOrder(order.id!);
+                setRefreshOrders(!refreshOrders);
               }}
               onUpdate={() => {
                 setIsEdit(true);
-                setSupplierEdit(supplier);
+                setOrderEdit(order);
                 openModal();
-                setRefreshSuppliers(!refreshSuppliers);
+                setRefreshOrders(!refreshOrders);
               }}
             />
           ))}
       </div>
       <Modal
         isOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
         ariaHideApp={false}
         onRequestClose={closeModal}
         style={{
@@ -104,13 +89,12 @@ export const Suppliers = () => {
           className="stroke-red-700 cursor-pointer fixed top-5 right-10"
         />
         <h1 className="font-title text-2xl font-bold text-primary">
-          {isEdit ? "Editar Fornecedor" : "Cadastrar Fornecedor"}
+          {isEdit ? "Editar Produto" : "Cadastrar Produto"}
         </h1>
-        <SupplierForm
+        <OrderForm
           edit={isEdit}
-          addressesOptions={addressesOptions}
-          supplier={suppliertEdit}
-          setRefresh={() => setRefreshSuppliers(!refreshSuppliers)}
+          order={orderEdit!}
+          setRefresh={() => setRefreshOrders(!refreshOrders)}
         />
       </Modal>
     </div>

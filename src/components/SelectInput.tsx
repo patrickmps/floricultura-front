@@ -26,9 +26,9 @@ export const SelectInput = ({
           props.className
         }
       >
-        <option selected>Selecione uma opção</option>
+        {props.defaultValue ?? <option selected>Selecione uma opção</option>}
         {options.map((option) => (
-          <option value={option.value}>
+          <option value={option.value} selected={option.value === props.defaultValue} key={option.value}>
             {option.label}
           </option>
         ))}

@@ -35,6 +35,9 @@ export default {
         98: '410px',
         102: '450px'
       },
+      height: {
+        82: '21rem',
+      }
       
     },
   },

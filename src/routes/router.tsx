@@ -6,6 +6,8 @@ import { Products } from "../pages/Products";
 import App from "../App";
 import { Suppliers } from "../pages/Suppliers";
 import { Address } from "../pages/Address";
+import { Category } from "../pages/Category";
+import { Orders } from "../pages/Orders";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ export const router = createBrowserRouter([
       {
         path: 'enderecos',
         element: <Address />
+      },
+      {
+        path: 'categorias',
+        element: <Category />
+      },
+      {
+        path: 'pedidos',
+        element: <Orders />
       },
     ]
   }
